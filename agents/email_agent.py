@@ -15,7 +15,8 @@ Email:
 Reply:
 """
     try:
-        model = genai.GenerativeModel("gemini-pro")
+        # ✅ Updated model name
+        model = genai.GenerativeModel("models/gemini-1.5-pro-latest")
         response = model.generate_content(prompt)
         return response.text
     except Exception as e:
