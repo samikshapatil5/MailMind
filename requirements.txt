@@ -1,2 +1,3 @@
 streamlit
-google-generativeai
+openai  # Required for Groq-compatible API calls
+google-generativeai  # Only needed if you still plan to use Gemini elsewhere
