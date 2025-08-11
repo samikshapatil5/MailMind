@@ -5,23 +5,22 @@ from email.mime.multipart import MIMEMultipart
 
 def send_email(recipient, body):
     try:
-        sender_email = st.secrets["SENDER_EMAIL"]
-        sender_password = st.secrets["EMAIL_PASSWORD"]
-        smtp_server = st.secrets.get("SMTP_SERVER", "smtp.gmail.com")
-        smtp_port = st.secrets.get("SMTP_PORT", 587)
+        sender_email = st.secrets["groq"]["SENDER_EMAIL"]
+        sender_password = st.secrets["groq"]["EMAIL_PASSWORD"]
+        smtp_server = st.secrets["groq"].get("SMTP_SERVER", "smtp.gmail.com")
+        smtp_port = st.secrets["groq"].get("SMTP_PORT", 587)
 
         message = MIMEMultipart()
         message['From'] = sender_email
         message['To'] = recipient
         message['Subject'] = "Response To Your Email"
-
         message.attach(MIMEText(body, "plain"))
 
-        server = smtplib.SMTP(smtp_server, smtp_port)
-        server.starttls()
-        server.login(sender_email, sender_password)
-        server.send_message(message)
-        server.quit()
+        with smtplib.SMTP(smtp_server, smtp_port) as server:
+            server.starttls()
+            server.login(sender_email, sender_password)
+            server.send_message(message)
+
         return True
     except Exception as e:
         print("Error sending email:", e)
